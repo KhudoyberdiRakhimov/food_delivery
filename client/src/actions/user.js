@@ -5,18 +5,20 @@ import {
   REMOVE_CART_ITEM_USER,
 } from './types'
 
-export const addToCart = ( _id, visitorId ) => async dispatch => {
-  const config = {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  };
-  const body = JSON.stringify({ _id, visitorId })
-  console.log(body)
+export const addToCart = (_id) => async dispatch => {
+  // const config = {
+  //   headers: {
+  //     'Content-Type': 'application/json'
+  //   }
+  // };
+  // const body = JSON.stringify({ _id, visitorId })
+  // console.log(body)
 
   try {
-    const res = await axios.post(`/api/users/addToCart`, body, config)
-
+    console.log(_id)
+    // const res = await axios.get(`/api/users/addToCart`)
+    const res = axios.get(`/api/users/addToCart?productId=${_id}`)
+    
     dispatch({
       type: ADD_TO_CART_USER,
       payload: res.data

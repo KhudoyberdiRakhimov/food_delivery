@@ -147,26 +147,25 @@ router.post(
   }
 );
 
-// @route    POST api/users/addToCart
+// @route    GET api/users/addToCart
 // @desc     Add product to cart
 // @access   Private
-router.post('/addToCart', auth, async (req, res) => { 
-  console.log(`This is BODY: ${req.body.visitorId}`)
-  Visitor.findOne({ _id: req.body.visitorId }, (err, userInfo) => {
+router.get('/addToCart', auth, (req, res) => {
+
+  Visitor.findOne({ _id: req.visitor.id }, (err, userInfo) => {
     let duplicate = false;
 
     console.log(userInfo)
 
     userInfo.cart.forEach((item) => {
-      if (item.id == req.body._id) {
+      if (item.id == req.query.productId) {
         duplicate = true;
       }
     })
 
-
     if (duplicate) {
       Visitor.findOneAndUpdate(
-        { _id: req.body.visitorId, "cart.id": req.body._id },
+        { _id: req.visitor.id, "cart.id": req.query.productId },
         { $inc: { "cart.$.quantity": 1 } },
         { new: true },
         (err, userInfo) => {
@@ -176,11 +175,11 @@ router.post('/addToCart', auth, async (req, res) => {
       )
     } else {
       Visitor.findOneAndUpdate(
-        { _id: req.body.visitorId },
+        { _id: req.visitor.id },
         {
           $push: {
             cart: {
-              id: req.body._id,
+              id: req.query.productId,
               quantity: 1,
               date: Date.now()
             }
