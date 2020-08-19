@@ -12,6 +12,7 @@ import RegisterVisitor from '../auth/RegisterVisitor';
 import LoginVisitor from '../auth/LoginVisitor';
 import VisitorRoute from '../routing/VisitorRoute';
 import Home from '../layout/Home';
+import Cart from '../cart/Cart';
 
 const Routes = () => {
   return (
@@ -22,7 +23,8 @@ const Routes = () => {
         <Route exact path='/login' component={Login} />
         <Route exact path='/loginVisitor' component={LoginVisitor} />
         <Route exact path='/registerVisitor' component={RegisterVisitor} />
-        <VisitorRoute exact path='/home' component={Home} />        
+        <VisitorRoute exact path='/home' component={Home} />
+        <VisitorRoute exact path='/cart' component={Cart} />
         <PrivateRoute exact path='/dashboard' component={Dashboard} />
         <PrivateRoute exact path='/editProfile' component={EditProfile} />
         <PrivateRoute exact path='/uploadProduct' component={UploadProduct} />

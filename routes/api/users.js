@@ -155,8 +155,6 @@ router.get('/addToCart', auth, (req, res) => {
   Visitor.findOne({ _id: req.visitor.id }, (err, userInfo) => {
     let duplicate = false;
 
-    console.log(userInfo)
-
     userInfo.cart.forEach((item) => {
       if (item.id == req.query.productId) {
         duplicate = true;
@@ -177,7 +175,7 @@ router.get('/addToCart', auth, (req, res) => {
       Visitor.findOneAndUpdate(
         { _id: req.visitor.id },
         {
-          $push: {
+          $push: { 
             cart: {
               id: req.query.productId,
               quantity: 1,
@@ -201,7 +199,7 @@ router.get('/addToCart', auth, (req, res) => {
 router.get('/removeFromCart', auth, (req, res) => {
 
   Visitor.findOneAndUpdate(
-    { _id: req.visitor._id },
+    { _id: req.visitor.id },
     {
       "$pull":
         { "cart": { "id": req.query._id } }
@@ -230,7 +228,7 @@ router.get('/removeFromCart', auth, (req, res) => {
 // @access   Private
 router.get('/userCartInfo', auth, (req, res) => {
   Visitor.findOne(
-    { _id: req.visitor._id },
+    { _id: req.visitor.id },
     (err, userInfo) => {
       let cart = userInfo.cart;
       let array = cart.map(item => {

@@ -18,6 +18,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  orders: {
+    type: Array,
+    default: [],
+  },
   date: {
     type: Date,
     default: Date.now,

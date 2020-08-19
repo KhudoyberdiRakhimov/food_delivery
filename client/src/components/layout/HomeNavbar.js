@@ -16,6 +16,7 @@ import List from '@material-ui/core/List';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -105,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
   linkTag: {
     textDecoration: 'none',
     color: 'inherit',
-    display: 'block',
+    display: 'flex',
   },
   grow: {
     flexGrow: 1,
@@ -252,6 +253,19 @@ const Navbar = ({
         </IconButton>
         <p>Profile</p>
       </MenuItem>
+      <MenuItem onClick={handleProfileMenuOpen}>
+        <Link to='/cart' className={classes.linkTag}>
+          <IconButton
+            aria-label="account of current user"
+            aria-controls="primary-search-account-menu"
+            aria-haspopup="true"
+            color="inherit"
+          >
+            <ShoppingCartIcon />  
+          </IconButton>
+          <p>Cart</p>
+        </Link>
+      </MenuItem>
     </Menu>
   );
 
@@ -301,6 +315,18 @@ const Navbar = ({
               color="inherit"
             >
               <AccountCircle />
+            </IconButton>
+            <IconButton
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+            >
+              <Link to='/cart' className={classes.linkTag}>
+                <ShoppingCartIcon />
+              </Link>
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>

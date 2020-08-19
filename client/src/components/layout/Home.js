@@ -1,4 +1,4 @@
-import React, { useEffect, useState }from 'react';
+import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
 import { Link } from 'react-router-dom';
 import Navbar from '../layout/HomeNavbar';
@@ -20,7 +20,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import { addToCart } from '../../actions/user';
+import { addToCart } from '../../actions/visitor';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -63,8 +63,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: ''
   },
 }));
-
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 const Home = ({
   auth: { visitor },

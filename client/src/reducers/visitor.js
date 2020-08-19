@@ -6,7 +6,7 @@ import {
 
 export default function (state = {}, action) {
   switch (action.type) {
-    case ADD_TO_CART_USER:
+    case ADD_TO_CART_USER: 
       return {
         ...state, userData: {
           ...state.userData,

@@ -104,6 +104,7 @@ router.post("/getProducts", (req, res) => {
 //?id=${productId}&type=single
 //id=12121212,121212,1212121   type=array 
 router.get("/products_by_id", (req, res) => {
+  console.log('FUCK YOU ASSHOLE !!!!!!!!!!!!!!!!!!!!!')
   let type = req.query.type
   let productIds = req.query.id
 
@@ -124,6 +125,7 @@ router.get("/products_by_id", (req, res) => {
   Product.find({ '_id': { $in: productIds } })
     .populate('user')
     .exec((err, product) => {
+      console.log(product)
       if (err) return res.status(400).send(err)
       return res.status(200).send(product)
     })
