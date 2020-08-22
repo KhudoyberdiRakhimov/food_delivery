@@ -17,6 +17,7 @@ app.use('/api/users', require('./routes/api/users'));
 app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/profile', require('./routes/api/profile'));
 app.use('/api/product', require('./routes/api/product'));
+app.use('/api/order', require('./routes/api/order'));
 
 // Static folder
 app.use('/uploads', express.static('uploads'));

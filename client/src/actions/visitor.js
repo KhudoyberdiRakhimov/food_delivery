@@ -3,6 +3,7 @@ import {
   ADD_TO_CART_USER,
   GET_CART_ITEMS_USER,
   REMOVE_CART_ITEM_USER,
+  ORDER_PRODUCT
 } from './types'
 
 export const addToCart = (_id) => async dispatch => {
@@ -33,7 +34,6 @@ export const getCartItems = (cartItems, userCart) => async dispatch => {
           }
         })
       })
-    console.log(res.data)
   dispatch ({
     type: GET_CART_ITEMS_USER,
     payload: res.data
@@ -51,11 +51,32 @@ export const removeCartItem = (id) => async dispatch => {
       }
     })
   })
-
-  console.log(res.data)
-
   dispatch({
     type: REMOVE_CART_ITEM_USER,
     payload: res.data
   })
+}
+
+export const orderProduct = (orderInfo) => async dispatch => {
+  console.log('Fuck message from "ACTIONS: orderProduct"')
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+
+  const body = JSON.stringify(orderInfo)
+  console.log(body)
+  try {
+    const res = await axios.post(`/api/order`, body, config)
+
+    dispatch({
+      type: ORDER_PRODUCT,
+      payload: res.data
+    })
+  } catch (err) {
+    console.error(err)
+  }
+
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
-import { getCartItems, removeCartItem } from '../../actions/visitor'
+import { getCartItems, removeCartItem, orderProduct } from '../../actions/visitor'
 import CartNavbar from '../layout/CartNavbar'
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -37,10 +37,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 const Cart = ({
+  auth,
   visitor,
   history,
   getCartItems,
-  removeCartItem
+  removeCartItem,
+  orderProduct
 }) => {
 
   const classes = useStyles()
@@ -80,6 +82,17 @@ const Cart = ({
     removeCartItem(productId)
   }
 
+  const order = () => {
+    const orderInfo = visitor.cartDetail.map(item => {
+      return {
+        productId: item._id,
+        userId: item.user._id,
+        quantity: item.quantity,
+        visitorId: auth.visitor._id
+      }
+    })
+    orderProduct(orderInfo)
+  }
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -134,7 +147,20 @@ const Cart = ({
         )) : <h1>The cart is Emty</h1>}
         {ShowTotal &&
           <Paper className={classes.paper}>
-            <Typography color='textPrimary' >Total: ${Total}</Typography>
+            <Grid container spacing={2}>
+            <Grid item>
+              <Typography color='textPrimary' >Total: ${Total}</Typography>
+            </Grid>  
+            <Grid>
+              <Button
+                variant='contained'
+                color='primary'
+                onClick={() => order()}
+              >
+                Order  
+              </Button>
+            </Grid>
+            </Grid>
           </Paper>
         }
       </div>
@@ -144,11 +170,13 @@ const Cart = ({
 
 Cart.propTypes = {
   getCartItems: PropTypes.func.isRequired,
-  removeCartItem: PropTypes.func.isRequired
+  removeCartItem: PropTypes.func.isRequired,
+  orderProduct: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({
-  visitor: state.visitor
+  visitor: state.visitor,
+  auth: state.auth
 })
 
-export default connect(mapStateToProps, { getCartItems, removeCartItem })(Cart)
+export default connect(mapStateToProps, {orderProduct, getCartItems, removeCartItem })(Cart)

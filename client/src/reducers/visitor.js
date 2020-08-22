@@ -1,7 +1,8 @@
 import {
   ADD_TO_CART_USER,
   GET_CART_ITEMS_USER,
-  REMOVE_CART_ITEM_USER
+  REMOVE_CART_ITEM_USER,
+  ORDER_PRODUCT
 } from '../actions/types';
 
 export default function (state = {}, action) {
@@ -24,6 +25,14 @@ export default function (state = {}, action) {
         userData: {
           ...state.userData,
           cart: action.payload.cart
+        }
+      }
+    case ORDER_PRODUCT:
+      return {
+        ...state,
+        cartDetail: [],
+        userData: {
+          cart: []
         }
       }
 
