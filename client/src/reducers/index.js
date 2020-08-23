@@ -4,6 +4,7 @@ import auth from './auth';
 import profile from './profile';
 import product from './product';
 import visitor from './visitor';
+import user from './user';
 
 export default combineReducers({
   alert,
@@ -11,4 +12,5 @@ export default combineReducers({
   profile,
   product,
   visitor,
+  user,
 });

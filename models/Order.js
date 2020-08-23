@@ -20,6 +20,12 @@ const OrderSchema = new mongoose.Schema({
   },
   address: {
     type: String,
+  },
+  name: {
+    type: String
+  },
+  amount: {
+    type: Number
   }
 })
 

@@ -88,7 +88,9 @@ const Cart = ({
         productId: item._id,
         userId: item.user._id,
         quantity: item.quantity,
-        visitorId: auth.visitor._id
+        visitorId: auth.visitor._id,
+        name: item.title,
+        amount: item.price*item.quantity+item.deliveryPrice
       }
     })
     orderProduct(orderInfo)

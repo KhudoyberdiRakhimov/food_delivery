@@ -11,7 +11,8 @@ import {
   CLEAR_PROFILE,
   VISITOR_LOADED,
   REGISTER_VISITOR_SUCCESS,
-  LOGIN_VISITOR_SUCCESS
+  LOGIN_VISITOR_SUCCESS,
+  CLEAR_ORDERS_USER
 } from './types';
 import setAuthToken from '../utils/setAuthToken';
 
@@ -182,4 +183,5 @@ export const loginVisitor = (email, password) => async dispatch => {
 export const logout = () => dispatch => {
   dispatch({ type: CLEAR_PROFILE });
   dispatch({ type: LOGOUT });
+  dispatch({ type: CLEAR_ORDERS_USER });
 };

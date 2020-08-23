@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const auth = require('../../middleware/authV')
+const authV = require('../../middleware/authV')
+const auth = require('../../middleware/auth')
 
 const Order = require('../../models/Order')
 const Visitor = require('../../models/Visitor')
@@ -8,7 +9,7 @@ const Visitor = require('../../models/Visitor')
 // @route POST api/order
 // @desc Add order to DB
 // @access Private
-router.post('/', auth, async (req, res) => {
+router.post('/', authV, async (req, res) => {
 
   try {
 
@@ -24,6 +25,25 @@ router.post('/', auth, async (req, res) => {
 
     res.status(200).json(orders)
 
+  } catch (err) {
+    console.error(err)
+    res.status(500).send('Server Error')
+  }
+})
+
+// @route GET api/order
+// @desc Get orders of user
+// @access Private
+router.get('/', auth, async (req, res) => {
+  
+  try {
+    
+    const orders = await Order.find({
+      userId: req.user.id,
+      isDelivered: false
+    })
+    console.log(orders)
+    res.status(200).json(orders)
   } catch (err) {
     console.error(err)
     res.status(500).send('Server Error')

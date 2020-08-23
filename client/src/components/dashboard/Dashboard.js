@@ -18,7 +18,6 @@ import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { mainListItems, secondaryListItems } from './listItems';
-import Chart from './Chart';
 import Deposits from './Deposits';
 import Orders from './Orders';
 import PropTypes from 'prop-types';
@@ -124,7 +123,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'block',
   },
 }));
-
+ 
 const Dashboard = ({
   logout,
   getCurrentProfile,
@@ -195,12 +194,6 @@ const Dashboard = ({
         <div className={classes.appBarSpacer} />
         <Container maxWidth='lg' className={classes.container}>
           <Grid container spacing={3}>
-            {/* Chart */}
-            <Grid item xs={12} md={8} lg={9}>
-              <Paper className={fixedHeightPaper}>
-                <Chart />
-              </Paper>
-            </Grid>
             {/* Recent Deposits */}
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper}>
