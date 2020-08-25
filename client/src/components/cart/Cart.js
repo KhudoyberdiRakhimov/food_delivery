@@ -11,6 +11,8 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import AddLocationIcon from '@material-ui/icons/AddLocation';
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,6 +50,7 @@ const Cart = ({
   const classes = useStyles()
   const [Total, setTotal] = useState(0)
   const [ShowTotal, setShowTotal] = useState(false)
+  const [Address, setAddress] = useState('')
 
   useEffect(() => {
     let cartItems = [];
@@ -67,6 +70,9 @@ const Cart = ({
     }
     }, [visitor.cartDetail])
 
+  const handleChange = (event) => {
+    setAddress(event.target.value)
+  }
   const calculateTotal = (cartDetail) => {
     let total = 0;
 
@@ -83,88 +89,116 @@ const Cart = ({
   }
 
   const order = () => {
-    const orderInfo = visitor.cartDetail.map(item => {
-      return {
-        productId: item._id,
-        userId: item.user._id,
-        quantity: item.quantity,
-        visitorId: auth.visitor._id,
-        name: item.title,
-        amount: item.price*item.quantity+item.deliveryPrice
-      }
-    })
-    orderProduct(orderInfo)
+    if (Address.length <= 0) {
+      alert('Please, Enter your location')
+    } else {
+      const orderInfo = visitor.cartDetail.map(item => {
+        return {
+          productId: item._id,
+          userId: item.user._id,
+          quantity: item.quantity,
+          visitorId: auth.visitor._id,
+          name: item.title,
+          amount: item.price * item.quantity + item.deliveryPrice,
+          address: Address
+        }
+      })
+      orderProduct(orderInfo)
+      setAddress('')
+      history.push('/home')
+    }
   }
   return (
     <div className={classes.root}>
       <CssBaseline />
       <CartNavbar />
       <div className={classes.cardContainer}>
-        {visitor.cartDetail ? visitor.cartDetail.map((product) => (
-          <Paper className={classes.paper} key={product._id}>
-            <Grid container spacing={2}>
-              <Grid item>
-                <ButtonBase className={classes.image}>
-                  <img className={classes.img} alt="complex" src={`http://localhost:5000/${product.images[0]}`} />
-                </ButtonBase>
-              </Grid>
-              <Grid item xs={12} sm container>
-                <Grid item xs container direction="column" spacing={2}>
-                  <Grid item xs>
-                    <Typography gutterBottom variant="subtitle1">
-                      {product.title}
-                    </Typography>
-                    <Typography variant="body2" gutterBottom>
-                      {product.description}
-                    </Typography>
-                    {/* <Typography variant="body2" color="textSecondary">
-                      {product.price}
-                    </Typography> */}
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={6}>
+            {visitor.cartDetail ? visitor.cartDetail.map((product) => (
+              <Paper className={classes.paper} key={product._id}>
+                <Grid container spacing={2}>
+                  <Grid item>
+                    <ButtonBase className={classes.image}>
+                      <img className={classes.img} alt="complex" src={`http://localhost:5000/${product.images[0]}`} />
+                    </ButtonBase>
                   </Grid>
-                  <Grid item xs container direction="row" spacing={2}>
-                    <Grid item>
-                      Price: ${product.price}
+                  <Grid item xs={12} sm container>
+                    <Grid item xs container direction="column" spacing={2}>
+                      <Grid item xs>
+                        <Typography gutterBottom variant="subtitle1">
+                          {product.title}
+                        </Typography>
+                        <Typography variant="body2" gutterBottom>
+                          {product.description}
+                        </Typography>
+                        {/* <Typography variant="body2" color="textSecondary">
+                          {product.price}
+                        </Typography> */}
+                      </Grid>
+                      <Grid item xs container direction="row" spacing={2}>
+                        <Grid item>
+                          Price: ${product.price}
+                        </Grid>
+                        <Grid item>
+                          Qty: {product.quantity}
+                        </Grid>
+                        <Grid item>
+                          <Button
+                            variant="contained"
+                            color="secondary"
+                            startIcon={<DeleteIcon />}
+                            onClick={() =>removeFromCart(product._id)}
+                          >
+                            Delete
+                          </Button>
+                        </Grid>
+                      </Grid>
                     </Grid>
                     <Grid item>
-                      Qty: {product.quantity}
-                    </Grid>
-                    <Grid item>
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        startIcon={<DeleteIcon />}
-                        onClick={() =>removeFromCart(product._id)}
-                      >
-                        Delete
-                      </Button>
+                      <Typography variant="subtitle1">${product.quantity*product.price+product.deliveryPrice}</Typography>
                     </Grid>
                   </Grid>
+                </Grid>
+              </Paper>
+            )) : <h1>The cart is Emty</h1>}
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            {visitor.cartDetail &&
+              <Grid container spacing={1} alignItems="flex-end">
+                <Grid item>
+                  <AddLocationIcon />
                 </Grid>
                 <Grid item>
-                  <Typography variant="subtitle1">${product.quantity*product.price+product.deliveryPrice}</Typography>
+                  <TextField
+                    id="input-with-icon-grid"
+                    label="Add location"
+                    value={Address}
+                    onChange={event => handleChange(event)}
+                  />
                 </Grid>
               </Grid>
-            </Grid>
-          </Paper>
-        )) : <h1>The cart is Emty</h1>}
-        {ShowTotal &&
-          <Paper className={classes.paper}>
-            <Grid container spacing={2}>
-            <Grid item>
-              <Typography color='textPrimary' >Total: ${Total}</Typography>
-            </Grid>  
-            <Grid>
-              <Button
-                variant='contained'
-                color='primary'
-                onClick={() => order()}
-              >
-                Order  
+            }
+            {ShowTotal &&
+              <Paper className={classes.paper}>
+                <Grid container spacing={2}>
+                  <Grid item>
+                    <Typography color='textPrimary' >Total: ${Total}</Typography>
+                  </Grid>
+                  <Grid>
+                    <Button
+                      variant='contained'
+                      color='primary'
+                      onClick={() => order()}
+                    >
+                      Order
               </Button>
-            </Grid>
-            </Grid>
-          </Paper>
-        }
+                  </Grid>
+                </Grid>
+              </Paper>
+            }
+          </Grid>
+        </Grid>
       </div>
     </div>
   )

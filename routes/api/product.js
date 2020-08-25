@@ -115,7 +115,7 @@ router.get("/products_by_id", (req, res) => {
     })
   }
 
-  //we need to find the product information that belong to product Id 
+  //we need to find product information that belongs to product Id 
   Product.find({ '_id': { $in: productIds } })
     .populate('user')
     .exec((err, product) => {
@@ -123,7 +123,5 @@ router.get("/products_by_id", (req, res) => {
       return res.status(200).send(product)
     })
 });
-
-
 
 module.exports = router;

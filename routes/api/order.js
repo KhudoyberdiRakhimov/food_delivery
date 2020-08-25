@@ -21,7 +21,7 @@ router.post('/', authV, async (req, res) => {
         cart: []
       }
     }
-    const visitor = await Visitor.updateOne(filter, updateDocument)
+    await Visitor.updateOne(filter, updateDocument)
 
     res.status(200).json(orders)
 
@@ -44,6 +44,56 @@ router.get('/', auth, async (req, res) => {
     })
     console.log(orders)
     res.status(200).json(orders)
+  } catch (err) {
+    console.error(err)
+    res.status(500).send('Server Error')
+  }
+})
+
+// @route GET api/order/delivered
+// @desc Update order
+// @access Private
+router.get('/delivered', auth, async (req, res) => {
+  
+  try {
+    
+    const filter = { _id: req.query.productId }
+    const updateDocument = {
+      $set: {
+        isDelivered: true
+      }
+    }
+    await Order.updateOne(filter, updateDocument)
+
+    const orders = await Order.find({
+      userId: req.user.id,
+      isDelivered: false
+    })
+    console.log(orders)
+    res.status(200).json(orders)
+  } catch (err) {
+    console.error(err)
+    res.status(500).send('Server Error')
+  }
+})
+
+router.get('/delivereds', auth, async (req, res) => {
+  
+  try {
+    if (req.query.productId) {
+      await Order.deleteOne({ _id: req.query.productId })
+      const orders = await Order.find({
+        userId: req.user.id,
+        isDelivered: true
+      })  
+      res.status(200).json(orders)
+    } else {
+      const orders = await Order.find({
+        userId: req.user.id,
+        isDelivered: true
+      })
+      res.status(200).json(orders)
+    }
   } catch (err) {
     console.error(err)
     res.status(500).send('Server Error')

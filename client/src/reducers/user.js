@@ -1,5 +1,5 @@
 import {
-  GET_ORDERS_USER, CLEAR_ORDERS_USER
+  GET_ORDERS_USER, CLEAR_ORDERS_USER, GET_DELIVERED_ORDERS
 } from '../actions/types'
 
 export default function (state = {}, action) {
@@ -14,7 +14,14 @@ export default function (state = {}, action) {
     case CLEAR_ORDERS_USER:
       return {
         ...state,
-        orders: []
+        orders: [],
+        delivereds: []
+      }
+
+    case GET_DELIVERED_ORDERS:
+      return {
+        ...state,
+        delivereds: action.payload
       }
     default:
       return state;
