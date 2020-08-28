@@ -45,6 +45,11 @@ const useStyles = makeStyles((theme) => ({
   linkTag: {
     textDecoration: 'none',
     color: 'inherit',
+  },
+  floatButton: {
+    position: 'fixed',
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
   }
 }));
 
@@ -221,22 +226,12 @@ const UploadProduct = ({
             {new Date().getFullYear()}
             {'.'}
           </Typography>
-      </Box>
-      <Link
-        to='/dashboard'
-        style={{
-          textDecoration: 'none',
-          color: 'inherit',
-          marginBottom: '1px',
-          marginRight: '2px',
-          position: 'absolute',
-          bottom: 0,
-          right: 0,
-        }}>
-        <Fab color='primary' aria-label='add'>
-          <DashboardIcon />
+        </Box>
+        <Fab color='primary' className={classes.floatButton} aria-label='add'>
+          <Link className={classes.linkTag} to='/dashboard'>
+            <DashboardIcon />
+          </Link>
         </Fab>
-      </Link>
       </Container>
   );
 }
