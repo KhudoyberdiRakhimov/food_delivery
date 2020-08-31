@@ -9,6 +9,32 @@ const auth = require('../../middleware/authV')
 const User = require('../../models/User');
 const Visitor = require('../../models/Visitor');
 
+// @route    POST api/users/profile
+// @desc     Update user info
+// @access   Private
+router.post('/profile', auth, async (req, res) => {
+  const { organization, phone, address, images, logos } = req.body
+  
+  try {
+    let user = await User.update(
+      { _id: req.body.user },
+      {
+        $set: {
+          organization: organization,
+          phone: phone,
+          address: address,
+          images: images,
+          logos: logos,
+        },
+      }
+    )
+    res.status(201).json(user)
+  } catch (err) {
+    console.error(err)
+    res.status(500).send('Server Error')
+  }
+})
+
 // @route    POST api/users
 // @desc     Register user
 // @access   Public

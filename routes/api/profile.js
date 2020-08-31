@@ -51,7 +51,7 @@ router.post('/', auth, async (req, res) => {
 
     res.status(201).json(profile);
   } catch (err) {
-    console.error(err.message);
+    console.error(err.message); 
     res.status(500).send('Server Error');
   }
 });

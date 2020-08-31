@@ -47,7 +47,7 @@ function FileUpload(props) {
       >
         {({ getRootProps, getInputProps }) => (
           <div style={{
-            width: '40%', height: '240px', border: '2px solid gray',
+            width: '40%', height: '100px', border: '2px solid gray',
             display: 'flex', alignItems: 'center', justifyContent: 'center'
           }}
             {...getRootProps()}

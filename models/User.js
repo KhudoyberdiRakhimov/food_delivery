@@ -12,7 +12,7 @@ const UserSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true,
+    unique: true, 
   },
   password: {
     type: String,
@@ -21,6 +21,26 @@ const UserSchema = new mongoose.Schema({
   orders: {
     type: Array,
     default: [],
+  },
+  address: {
+    type: String,
+    default: ''
+  },
+  organization: {
+    type: String,
+    default: ''
+  },
+  phone: {
+    type: Number,
+    default: ''
+  },
+  images: {
+    type: Array,
+    default: []
+  },
+  logos: {
+    type: Array,
+    default: []
   },
   date: {
     type: Date,

@@ -11,55 +11,64 @@ import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import PublishIcon from '@material-ui/icons/Publish';
+import EditIcon from '@material-ui/icons/Edit';
 
 export const mainListItems = (
-         <div>
-           <ListItem button>
-             <ListItemIcon>
-               <DashboardIcon />
-             </ListItemIcon>
-             <ListItemText primary='Dashboard' />
-           </ListItem>
-           <ListItem button>
-             <Link
-               style={{
-                 textDecoration: 'none',
-                 color: 'inherit',
-                 display: 'flex',
-               }}
-               to='/uploadProduct'>
-               <ListItemIcon>
-                 <PublishIcon />
-               </ListItemIcon>
-               <ListItemText primary='Upload Product' />
-             </Link>
-           </ListItem>
-           <ListItem button>
-             <ListItemIcon>
-               <ShoppingCartIcon />
-             </ListItemIcon>
-             <ListItemText primary='Orders' />
-           </ListItem>
-           <ListItem button>
-             <ListItemIcon>
-               <PeopleIcon />
-             </ListItemIcon>
-             <ListItemText primary='Customers' />
-           </ListItem>
-           <ListItem button>
-             <ListItemIcon>
-               <BarChartIcon />
-             </ListItemIcon>
-             <ListItemText primary='Reports' />
-           </ListItem>
-           <ListItem button>
-             <ListItemIcon>
-               <LayersIcon />
-             </ListItemIcon>
-             <ListItemText primary='Integrations' />
-           </ListItem>
-         </div>
-       );
+  <div>
+    <ListItem button>
+      <ListItemIcon>
+        <DashboardIcon />
+      </ListItemIcon>
+      <ListItemText primary='Dashboard' />
+    </ListItem>
+    <ListItem button>
+      <Link
+        style={{
+          textDecoration: 'none',
+          color: 'inherit',
+          display: 'flex',
+        }}
+        to='/uploadProduct'>
+        <ListItemIcon>
+          <PublishIcon />
+        </ListItemIcon>
+        <ListItemText primary='Upload Product' />
+      </Link>
+    </ListItem>
+    <ListItem button>
+      <ListItemIcon>
+        <ShoppingCartIcon />
+      </ListItemIcon>
+      <ListItemText primary='Orders' />
+    </ListItem>
+    <ListItem button>
+      <ListItemIcon>
+        <PeopleIcon />
+      </ListItemIcon>
+      <ListItemText primary='Customers' />
+    </ListItem>
+    <ListItem button>
+      <ListItemIcon>
+        <BarChartIcon />
+      </ListItemIcon>
+      <ListItemText primary='Reports' />
+    </ListItem>
+    <ListItem button>
+      <Link
+        style={{
+          textDecoration: 'none',
+          color: 'inherit',
+          display: 'flex',
+        }}
+        to='/editProfile'>
+        <ListItemIcon>
+          <EditIcon />
+        </ListItemIcon>
+        <ListItemText primary='Edit Profile' />
+      </Link>
+    </ListItem>
+  </div>
+);
 
 export const secondaryListItems = (
   <div>

@@ -1,43 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
-import clsx from 'clsx';
-import { fade, makeStyles, withStyles } from '@material-ui/core/styles';
+import { fade, makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Typography from '@material-ui/core/Typography';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import DashboardIcon from '@material-ui/icons/Dashboard';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import PeopleIcon from '@material-ui/icons/People';
-import BarChartIcon from '@material-ui/icons/BarChart';
-import { green } from '@material-ui/core/colors';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import Favorite from '@material-ui/icons/Favorite';
-import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
-import LayersIcon from '@material-ui/icons/Layers';
-import PublishIcon from '@material-ui/icons/Publish';
 import InputBase from '@material-ui/core/InputBase';
 import MenuItem from '@material-ui/core/MenuItem';
-import Divider from '@material-ui/core/Divider';
 import Menu from '@material-ui/core/Menu';
-import List from '@material-ui/core/List';
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { secondaryListItems } from '../dashboard/listItems'
 import PropTypes from 'prop-types';
 import { logout } from '../../actions/auth';
 import Card from '@material-ui/core/Card';
@@ -52,10 +29,7 @@ import Container from '@material-ui/core/Container';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import MailIcon from '@material-ui/icons/Mail';
 import Badge from '@material-ui/core/Badge';
-import Button from '@material-ui/core/Button';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
 import { addToCart } from '../../actions/visitor';
-import { price, categories } from './Datas';
 
 const useStyles = makeStyles((theme) => ({
   root:{
@@ -170,20 +144,6 @@ const Home = ({
   const [Limit, setLimit] = useState(8)
   const [PostSize, setPostSize] = useState()
   const [SearchTerms, setSearchTerms] = useState("")
-  const [state, setState] = useState({
-    Grill: false,
-    Pizza: false,
-    Burgers: false,
-    Salads: false,
-    Coffee: false,
-  })
-  const [FilterButton, setFilterButton] = useState({
-    bottom: false
-  })
-  const [Filters, setFilters] = useState({
-    categories: [],
-    price: []
-  })
 
   useEffect(() => {
 
@@ -200,14 +160,6 @@ const Home = ({
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  const [open, setOpen] = React.useState(true);
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-  // const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -225,7 +177,7 @@ const Home = ({
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
-
+ 
   const getProducts = (variables) => {
     Axios.post('/api/product/getProducts', variables)
       .then(response => {
@@ -237,7 +189,7 @@ const Home = ({
           }
           setPostSize(response.data.postSize)
         } else {
-          alert('Failed to fectch product datas')
+          alert('Failed to fetch product datas')
         }
       })
   }
@@ -249,7 +201,6 @@ const Home = ({
       skip: skip,
       limit: Limit,
       loadMore: true,
-      filters: Filters,
       searchTerm: SearchTerms
     }
     getProducts(variables)
@@ -261,58 +212,18 @@ const Home = ({
     const variables = {
       skip: 0,
       limit: Limit,
-      filters: filters
-
     }
+
     getProducts(variables)
     setSkip(0)
-
-  }
-  const price = [12]
-  const handlePrice = (value) => {
-    const data = price;
-    let array = [];
-
-    for (let key in data) {
-
-      if (data[key]._id === parseInt(value, 10)) {
-        array = data[key].array;
-      }
-    }
-    console.log('Price array ', array)
-    return array
   }
 
-  const handleFilters = (category) => {
-
-    const newFilters = { ...Filters }
-    let stateItems
-    for (const [key, value] of Object.entries(state)) {
-      if (key === true) {
-        stateItems.push(key)
-      }
-    }
-    console.log(stateItems)
-    newFilters[category] = stateItems
-
-    // if (category === "price") {
-    //   let priceValues = handlePrice(filters)
-    //   newFilters[category] = priceValues
-
-    // }
-
-    console.log(newFilters)
-
-    showFilteredResults(newFilters)
-    setFilters(newFilters)
-  }
 
   const updateSearchTerms = (newSearchTerm) => {
 
     const variables = {
       skip: 0,
       limit: Limit,
-      filters: Filters,
       searchTerm: newSearchTerm
     }
 
@@ -320,10 +231,6 @@ const Home = ({
     setSearchTerms(newSearchTerm)
 
     getProducts(variables)
-  }
-
-  const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked })
   }
 
   const menuId = 'primary-search-account-menu';
@@ -386,64 +293,13 @@ const Home = ({
       </MenuItem>
     </Menu>
   );
-  const toggleDrawer = (anchor, open) => (event) => {
-    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-      return;
-    }
-
-    setFilterButton({ ...state, [anchor]: open });
-  };
-
-  const list = (anchor) => (
-    <div
-      className={classes.fullList}
-      role="presentation"
-      // onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}
-    >
-      <FormGroup row>
-        {categories.map(category => (
-          <FormControlLabel
-            key={category._id}
-            onChange={handleFilters('categories')}
-            control={
-              <Checkbox
-                checked={state.category}
-                onChange={handleChange}
-                name={category.name}
-                color="primary"
-              />
-            }
-            label={category.name}
-          />
-        ))}
-      </FormGroup>
-      {/* <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List> */}
-    </div>
-  );
   
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="absolute">
+      <AppBar position='absolute'>
         <Toolbar>
-          <Typography className={classes.title} variant="h6" noWrap>
+          <Typography className={classes.title} variant='h6' noWrap>
             yemish.uz
           </Typography>
           <div className={classes.search}>
@@ -451,7 +307,8 @@ const Home = ({
               <SearchIcon />
             </div>
             <InputBase
-              placeholder="Search…"
+              placeholder='Search…'
+              onChange={(e) => updateSearchTerms(e.target.value)}
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
@@ -461,35 +318,33 @@ const Home = ({
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
+            <IconButton aria-label='show 4 new mails' color='inherit'>
+              <Badge badgeContent={4} color='secondary'>
                 <MailIcon />
               </Badge>
             </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="secondary">
+            <IconButton aria-label='show 17 new notifications' color='inherit'>
+              <Badge badgeContent={17} color='secondary'>
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
             <IconButton
-              edge="end"
-              aria-label="account of current user"
+              edge='end'
+              aria-label='account of current user'
               aria-controls={menuId}
-              aria-haspopup="true"
+              aria-haspopup='true'
               onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
+              color='inherit'>
               <AccountCircle />
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>
             <IconButton
-              aria-label="show more"
+              aria-label='show more'
               aria-controls={mobileMenuId}
-              aria-haspopup="true"
+              aria-haspopup='true'
               onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
+              color='inherit'>
               <MoreIcon />
             </IconButton>
           </div>
@@ -507,31 +362,30 @@ const Home = ({
                   <CardMedia
                     className={classes.cardMedia}
                     image={card.images[0]}
-                    title="Image title"
+                    title='Image title'
                   />
                   <CardHeader
                     avatar={
                       <Avatar
-                        alt="Product Image"
-                        aria-label="recipe"
-                        src={card.images[0]}
+                        alt='Product Image'
+                        aria-label='recipe'
+                        src={card.user.logos[0]}
                       />
-                        }
+                    }
                     title={card.title}
                     subheader={card.description}
                   />
                   <CardActions>
-                    <IconButton aria-label="add to favorites">
+                    <IconButton aria-label='add to favorites'>
                       <MotorcycleIcon />${card.deliveryPrice}
                     </IconButton>
-                    <IconButton aria-label="share">
+                    <IconButton aria-label='share'>
                       <AccessTimeIcon />
                     </IconButton>
-                    <IconButton 
-                      color="primary"
-                      aria-label="add to cart"
-                      onClick={() => addToCart(card._id, visitor._id)}
-                    >
+                    <IconButton
+                      color='primary'
+                      aria-label='add to cart'
+                      onClick={() => addToCart(card._id, visitor._id)}>
                       <AddCircleSharpIcon />${card.price}
                     </IconButton>
                   </CardActions>
@@ -541,23 +395,6 @@ const Home = ({
           </Grid>
         </Container>
       </main>
-      {['bottom'].map((anchor) => (
-        <React.Fragment key={anchor}>
-          <Button
-            onClick={toggleDrawer(anchor, true)}
-            className={classes.floatButton}
-          >
-            {anchor}
-          </Button>
-          <Drawer
-            anchor={anchor}
-            open={FilterButton[anchor]}
-            onClose={toggleDrawer(anchor, false)}
-          >
-            {list(anchor)}
-          </Drawer>
-        </React.Fragment>
-      ))}
     </div>
   );
 }

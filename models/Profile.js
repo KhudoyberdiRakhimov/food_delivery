@@ -16,6 +16,14 @@ const ProfileSchema = new mongoose.Schema({
   organization: {
     type: String,
     default: ''
+  },
+  phone: {
+    type: Number,
+    default: ''
+  },
+  images: {
+    type: Array,
+    default: []
   }
 });
 

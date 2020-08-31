@@ -183,5 +183,5 @@ export const loginVisitor = (email, password) => async dispatch => {
 export const logout = () => dispatch => {
   dispatch({ type: CLEAR_PROFILE });
   dispatch({ type: LOGOUT });
-  dispatch({ type: CLEAR_ORDERS_USER });
+  dispatch({ type: CLEAR_ORDERS_USER }); 
 };

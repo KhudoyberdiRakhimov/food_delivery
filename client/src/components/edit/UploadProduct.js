@@ -123,7 +123,7 @@ const UploadProduct = ({
     }
   }
   return (
-      <Container component='main' maxWidth='xs'>
+      <Container component='main' maxWidth='md'>
         <CssBaseline />
         <div className={classes.paper}>
           <Typography component='h1' variant='h5'>
@@ -170,7 +170,7 @@ const UploadProduct = ({
                     value={DeliveryValue}
                     onChange={(e) => onDeliveryChange(e)}
                     startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                    labelWidth={60}
+                    labelWidth={120}
                   />
                 </FormControl>
               </Grid>

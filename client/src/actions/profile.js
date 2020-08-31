@@ -66,7 +66,7 @@ export const getProfileById = userId => async dispatch => {
 
 // Create or update profile
 export const createProfile = (
-  formData,
+  variables,
   // history,
   edit = false
 ) => async dispatch => {
@@ -77,7 +77,7 @@ export const createProfile = (
       }
     };
 
-    const res = await axios.post('/api/profile', formData, config);
+    const res = await axios.post('/api/profile', variables, config);
 
     dispatch({
       type: GET_PROFILE,
