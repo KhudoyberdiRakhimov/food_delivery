@@ -1,38 +1,47 @@
-import React, { useEffect, useState } from 'react';
-import Axios from 'axios';
-import { fade, makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import InputBase from '@material-ui/core/InputBase';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import SearchIcon from '@material-ui/icons/Search';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { logout } from '../../actions/auth';
-import Card from '@material-ui/core/Card';
-import Avatar from '@material-ui/core/Avatar';
-import CardActions from '@material-ui/core/CardActions';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import AddCircleSharpIcon from '@material-ui/icons/AddCircleSharp';
-import MotorcycleIcon from '@material-ui/icons/Motorcycle';
-import Grid from '@material-ui/core/Grid';
-import Container from '@material-ui/core/Container';
-import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import MailIcon from '@material-ui/icons/Mail';
-import Badge from '@material-ui/core/Badge';
-import { addToCart } from '../../actions/visitor';
+import React, { useEffect, useState } from 'react'
+import Axios from 'axios'
+import { fade, makeStyles } from '@material-ui/core/styles'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import IconButton from '@material-ui/core/IconButton'
+import Typography from '@material-ui/core/Typography'
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
+import InputBase from '@material-ui/core/InputBase'
+import MenuItem from '@material-ui/core/MenuItem'
+import Menu from '@material-ui/core/Menu'
+import SearchIcon from '@material-ui/icons/Search'
+import FilterListIcon from '@material-ui/icons/FilterList'
+import AccountCircle from '@material-ui/icons/AccountCircle'
+import MoreIcon from '@material-ui/icons/MoreVert'
+import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
+import { logout } from '../../actions/auth'
+import Card from '@material-ui/core/Card'
+import Avatar from '@material-ui/core/Avatar'
+import CardActions from '@material-ui/core/CardActions'
+import CardHeader from '@material-ui/core/CardHeader'
+import CardMedia from '@material-ui/core/CardMedia'
+import AddCircleSharpIcon from '@material-ui/icons/AddCircleSharp'
+import MotorcycleIcon from '@material-ui/icons/Motorcycle'
+import Grid from '@material-ui/core/Grid'
+import Container from '@material-ui/core/Container'
+import AccessTimeIcon from '@material-ui/icons/AccessTime'
+import MailIcon from '@material-ui/icons/Mail'
+import Divider from '@material-ui/core/Divider'
+import Badge from '@material-ui/core/Badge'
+import Button from '@material-ui/core/Button'
+import Accordion from '@material-ui/core/Accordion'
+import AccordionSummary from '@material-ui/core/AccordionSummary'
+import AccordionDetails from '@material-ui/core/AccordionDetails'
+import { addToCart, getCartItems } from '../../actions/visitor'
+import CheckBox from './Sections/CheckBox'
+import RadioBox from './Sections/RadioBox'
+import { price, categories } from './Sections/Datas'
 
 const useStyles = makeStyles((theme) => ({
-  root:{
+  root: {
     display: 'flex',
   },
   appBarSpacer: theme.mixins.toolbar,
@@ -130,13 +139,25 @@ const useStyles = makeStyles((theme) => ({
     bottom: theme.spacing(2),
     left: theme.spacing(2),
   },
-}))
+  formControl: {
+    margin: theme.spacing(3),
+  },
+  accordion: {
+    width: '100%',
+  },
+  heading: {
+    fontSize: theme.typography.pxToRem(20),
+    fontWeight: theme.typography.fontWeightRegular,
+  },
+}));
 
 const Home = ({
-  auth: { visitor },
+  auth,
+  visitor,
   history,
   addToCart,
-  logout
+  logout,
+  getCartItems
 }) => {
   const classes = useStyles();
   const [Products, setProducts] = useState([])
@@ -144,6 +165,10 @@ const Home = ({
   const [Limit, setLimit] = useState(8)
   const [PostSize, setPostSize] = useState()
   const [SearchTerms, setSearchTerms] = useState("")
+  const [Filters, setFilters] = useState({
+    category: [],
+    price: [],
+  })
 
   useEffect(() => {
 
@@ -155,28 +180,29 @@ const Home = ({
     getProducts(variables)
 
   }, [])
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const [anchorEl, setAnchorEl] = useState(null)
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null)
+
+  const isMenuOpen = Boolean(anchorEl)
+  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
 
   const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+    setAnchorEl(event.currentTarget)
+  }
 
   const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
+    setMobileMoreAnchorEl(null)
+  }
 
   const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
+    setAnchorEl(null)
+    handleMobileMenuClose()
   };
 
   const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
+    setMobileMoreAnchorEl(event.currentTarget)
+  }
  
   const getProducts = (variables) => {
     Axios.post('/api/product/getProducts', variables)
@@ -195,44 +221,71 @@ const Home = ({
   }
 
   const onLoadMore = () => {
-    let skip = Skip + Limit;
+    let skip = Skip + Limit
 
     const variables = {
       skip: skip,
       limit: Limit,
       loadMore: true,
-      searchTerm: SearchTerms
+      filters: Filters,
+      searchTerm: SearchTerms,
     }
     getProducts(variables)
     setSkip(skip)
   }
 
   const showFilteredResults = (filters) => {
-
     const variables = {
       skip: 0,
       limit: Limit,
+      filters: filters,
     }
-
     getProducts(variables)
     setSkip(0)
   }
 
+  const handlePrice = (value) => {
+    const data = price
+    let array = []
+
+    for (let key in data) {
+      if (data[key]._id === parseInt(value, 10)) {
+        array = data[key].array
+      }
+    }
+    console.log('array', array)
+    return array
+  }
+
+  const handleFilters = (filters, category) => {
+    const newFilters = { ...Filters }
+
+    newFilters[category] = filters
+
+    if (category === 'price') {
+      let priceValues = handlePrice(filters)
+      newFilters[category] = priceValues
+    }
+
+    console.log(newFilters)
+
+    showFilteredResults(newFilters)
+    setFilters(newFilters)
+  }
 
   const updateSearchTerms = (newSearchTerm) => {
-
     const variables = {
       skip: 0,
       limit: Limit,
-      searchTerm: newSearchTerm
+      filters: Filters,
+      searchTerm: newSearchTerm,
     }
 
     setSkip(0)
     setSearchTerms(newSearchTerm)
 
-    getProducts(variables)
+    getProducts(variables);
   }
-
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -251,7 +304,7 @@ const Home = ({
         </Link>
       </MenuItem>
     </Menu>
-  );
+  )
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
@@ -262,31 +315,31 @@ const Home = ({
       keepMounted
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
+      onClose={handleMobileMenuClose}>
       <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <ShoppingCartIcon />
-          </Badge>
-        </IconButton>
-        <p>Cart</p>
+        <Link to='/cart' className={classes.linkTag}>
+          <IconButton aria-label='show 11 new notifications' color='inherit'>
+            <Badge
+              badgeContent={
+                visitor.userData
+                  ? visitor.userData.cart.length
+                  : auth.visitor
+                  ? auth.visitor.cart.length
+                  : 0
+              }
+              color='secondary'>
+              <ShoppingCartIcon />
+            </Badge>
+          </IconButton>
+          <p>Cart</p>
+        </Link>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
+          aria-label='account of current user'
+          aria-controls='primary-search-account-menu'
+          aria-haspopup='true'
+          color='inherit'>
           <AccountCircle />
         </IconButton>
         <p>Profile</p>
@@ -318,15 +371,20 @@ const Home = ({
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label='show 4 new mails' color='inherit'>
-              <Badge badgeContent={4} color='secondary'>
-                <MailIcon />
-              </Badge>
-            </IconButton>
             <IconButton aria-label='show 17 new notifications' color='inherit'>
-              <Badge badgeContent={17} color='secondary'>
-                <ShoppingCartIcon />
-              </Badge>
+              <Link to='/cart' className={classes.linkTag}>
+                <Badge
+                  badgeContent={
+                    visitor.userData
+                      ? visitor.userData.cart.length
+                      : auth.visitor
+                      ? auth.visitor.cart.length
+                      : 0
+                  }
+                  color='secondary'>
+                  <ShoppingCartIcon />
+                </Badge>
+              </Link>
             </IconButton>
             <IconButton
               edge='end'
@@ -355,7 +413,29 @@ const Home = ({
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth='lg' className={classes.container}>
-          <Grid container className={classes.cardGrid} spacing={4}>
+          <Accordion>
+            <AccordionSummary
+              // expandIcon={<ExpandMoreIcon />}
+              aria-controls='panel1a-content'
+              id='panel1a-header'>
+              <IconButton aria-label='filter' className={classes.heading}>
+                <FilterListIcon />
+                Filter
+              </IconButton>
+            </AccordionSummary>
+            <AccordionDetails>
+              <CheckBox
+                list={categories}
+                handleFilters={(filters) => handleFilters(filters, 'category')}
+              />
+              <Divider />
+              <RadioBox
+                list={price}
+                handleFilters={(filters) => handleFilters(filters, 'price')}
+              />
+            </AccordionDetails>
+          </Accordion>
+          <Grid container className={classes.cardGrid} spacing={2}>
             {Products.map((card) => (
               <Grid item key={card._id} xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
@@ -364,17 +444,21 @@ const Home = ({
                     image={card.images[0]}
                     title='Image title'
                   />
-                  <CardHeader
-                    avatar={
-                      <Avatar
-                        alt='Product Image'
-                        aria-label='recipe'
-                        src={card.user.logos[0]}
-                      />
-                    }
-                    title={card.title}
-                    subheader={card.description}
-                  />
+                  <Link
+                    className={classes.linkTag}
+                    to={`/product/${card.user._id}`}>
+                    <CardHeader
+                      avatar={
+                        <Avatar
+                          alt='Product Image'
+                          aria-label='recipe'
+                          src={card.user.logos[0]}
+                        />
+                      }
+                      title={card.title}
+                      subheader={card.description}
+                    />
+                  </Link>
                   <CardActions>
                     <IconButton aria-label='add to favorites'>
                       <MotorcycleIcon />${card.deliveryPrice}
@@ -385,7 +469,7 @@ const Home = ({
                     <IconButton
                       color='primary'
                       aria-label='add to cart'
-                      onClick={() => addToCart(card._id, visitor._id)}>
+                      onClick={() => addToCart(card._id, auth.visitor._id)}>
                       <AddCircleSharpIcon />${card.price}
                     </IconButton>
                   </CardActions>
@@ -394,6 +478,9 @@ const Home = ({
             ))}
           </Grid>
         </Container>
+        <Grid container justify='center'>
+          <Button>More...</Button>
+        </Grid>
       </main>
     </div>
   );
@@ -402,11 +489,13 @@ const Home = ({
 Home.propTypes = {
   auth: PropTypes.object.isRequired,
   addToCart: PropTypes.func.isRequired,
+  getCartItems: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
+  visitor: state.visitor
 });
 
-export default connect(mapStateToProps, { addToCart, logout })(Home);
+export default connect(mapStateToProps, { getCartItems, addToCart, logout })(Home);

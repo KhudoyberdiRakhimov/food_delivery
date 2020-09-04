@@ -61,6 +61,13 @@ const Cart = ({
         });
         getCartItems(cartItems, visitor.userData.cart)
       }
+    } else {
+      if (auth.visitor.cart.length > 0) {
+        auth.visitor.cart.forEach(item => {
+          cartItems.push(item.id)
+        })
+        getCartItems(cartItems, auth.visitor.cart)
+      }
     }
   }, [visitor.userData]) 
 

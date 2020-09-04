@@ -12,7 +12,8 @@ import {
   VISITOR_LOADED,
   REGISTER_VISITOR_SUCCESS,
   LOGIN_VISITOR_SUCCESS,
-  CLEAR_ORDERS_USER
+  CLEAR_ORDERS_USER,
+  ORDER_PRODUCT
 } from './types';
 import setAuthToken from '../utils/setAuthToken';
 
@@ -184,4 +185,5 @@ export const logout = () => dispatch => {
   dispatch({ type: CLEAR_PROFILE });
   dispatch({ type: LOGOUT });
   dispatch({ type: CLEAR_ORDERS_USER }); 
+  dispatch({ type: ORDER_PRODUCT });
 };

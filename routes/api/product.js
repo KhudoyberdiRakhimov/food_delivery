@@ -23,6 +23,17 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage }).single("file")
 
+router.get('/', async (req, res) => {
+  const userId = req.query.userId
+
+  try {
+    const products = await Product.find({ user: userId })
+    res.status(200).json(products)
+  } catch (err) {
+    console.error(err)
+    res.status(500).send(err)
+  }
+})
 
 router.post("/uploadImage", auth, (req, res) => {
 
@@ -73,8 +84,6 @@ router.post("/getProducts", (req, res) => {
     }
   }
 
-  console.log(findArgs)
-
   if (term) {
     Product.find(findArgs)
       .find({ $text: { $search: term } })
@@ -111,7 +120,7 @@ router.get("/products_by_id", (req, res) => {
     let ids = req.query.id.split(',');
     productIds = [];
     productIds = ids.map(item => {
-      return item
+      return item 
     })
   }
 

@@ -9,6 +9,22 @@ const auth = require('../../middleware/authV')
 const User = require('../../models/User');
 const Visitor = require('../../models/Visitor');
 
+// @route    GET api/users/:userId
+// @desc     Get user info
+// @access   Private
+router.get('/', auth, async (req, res) => {
+  const userId = req.query.userId
+
+  try {
+    const userInfo = await User.find({ '_id': userId })
+    res.status(201).json(userInfo)
+  } catch (err) {
+    console.error(err)
+    res.status(500).send('Server Error')
+  }
+  
+})
+
 // @route    POST api/users/profile
 // @desc     Update user info
 // @access   Private

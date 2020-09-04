@@ -13,6 +13,7 @@ import LoginVisitor from '../auth/LoginVisitor';
 import VisitorRoute from '../routing/VisitorRoute';
 import Home from '../layout/Home';
 import Cart from '../cart/Cart';
+import Product from '../product/Product';
 
 const Routes = () => {
   return (
@@ -24,6 +25,7 @@ const Routes = () => {
         <Route exact path='/loginVisitor' component={LoginVisitor} />
         <Route exact path='/registerVisitor' component={RegisterVisitor} />
         <VisitorRoute exact path='/home' component={Home} />
+        <VisitorRoute exact path='/product/:userId' component={Product} />
         <VisitorRoute exact path='/cart' component={Cart} />
         <PrivateRoute exact path='/dashboard' component={Dashboard} />
         <PrivateRoute exact path='/editProfile' component={EditProfile} />
